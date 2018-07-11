@@ -1,6 +1,6 @@
 {
   "name": "@pii/application",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A structured web application",
   "main": "dist/index.js",
   "engines": {
