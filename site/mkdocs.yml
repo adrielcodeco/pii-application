@@ -1,0 +1,5 @@
+site_name: π Application
+docs_dir: site/docs
+site_dir: docs
+theme:
+  name: 'material'

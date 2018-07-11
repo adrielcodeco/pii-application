@@ -12,7 +12,8 @@
     "test": "gulp test",
     "coveralls": "gulp coveralls",
     "build": "gulp build",
-    "precommit": "gulp precommit"
+    "precommit": "gulp precommit",
+    "docs": "gulp docs"
   },
   "homepage": "https://github.com/adrielcodeco/pii-application",
   "bugs": {
@@ -34,7 +35,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@pii/di": "^1.0.0",
+    "@pii/di": "^1.0.2",
     "@pii/moduleloader": "^1.0.0",
     "moment": "^2.22.2",
     "numeral": "^2.0.6",
