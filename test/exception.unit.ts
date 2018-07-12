@@ -57,7 +57,7 @@ test('new without process.env.NODE_ENV, without process.env.DEVELOPMENTMODE', ()
   delete process.env.NODE_ENV
   delete process.env.DEVELOPMENTMODE
   let exc = new unit.Exception()
-  expect(exc.toJSON()).toMatchObject({ stack: expect.stringMatching(/^Error/) })
+  expect(exc.toJSON()).toMatchObject({ stack: expect.any(String) })
   process.env.NODE_ENV = 'test'
 })
 
@@ -77,7 +77,7 @@ test('new with process.env.NODE_ENV = "development", without process.env.DEVELOP
   process.env.NODE_ENV = 'development'
   delete process.env.DEVELOPMENTMODE
   let exc = new unit.Exception()
-  expect(exc.toJSON()).toEqual({ stack: expect.stringMatching(/^Error/) })
+  expect(exc.toJSON()).toEqual({ stack: expect.any(String) })
   process.env.NODE_ENV = 'test'
 })
 
@@ -87,7 +87,7 @@ test('new without process.env.NODE_ENV, with process.env.DEVELOPMENTMODE', () =>
   delete process.env.NODE_ENV
   process.env.DEVELOPMENTMODE = 'true'
   let exc = new unit.Exception()
-  expect(exc.toJSON()).toEqual({ stack: expect.stringMatching(/^Error/) })
+  expect(exc.toJSON()).toEqual({ stack: expect.any(String) })
   process.env.NODE_ENV = 'test'
   delete process.env.DEVELOPMENTMODE
 })
@@ -98,7 +98,7 @@ test('new with process.env.NODE_ENV = "test", with process.env.DEVELOPMENTMODE',
   process.env.NODE_ENV = 'test'
   process.env.DEVELOPMENTMODE = 'true'
   let exc = new unit.Exception()
-  expect(exc.toJSON()).toEqual({ stack: expect.stringMatching(/^Error/) })
+  expect(exc.toJSON()).toEqual({ stack: expect.any(String) })
   process.env.NODE_ENV = 'test'
   delete process.env.DEVELOPMENTMODE
 })
@@ -109,7 +109,7 @@ test('new with process.env.NODE_ENV = "development", with process.env.DEVELOPMEN
   process.env.NODE_ENV = 'development'
   process.env.DEVELOPMENTMODE = 'true'
   let exc = new unit.Exception()
-  expect(exc.toJSON()).toEqual({ stack: expect.stringMatching(/^Error/) })
+  expect(exc.toJSON()).toEqual({ stack: expect.any(String) })
   process.env.NODE_ENV = 'test'
   delete process.env.DEVELOPMENTMODE
 })
