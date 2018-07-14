@@ -3,6 +3,7 @@ devops
 docs
 examples
 node_modules
+site
 src
 test
 .cover*
