@@ -13,10 +13,11 @@ import { LoggerToken } from './logger'
 import { ServerToken } from './server'
 import { LogTransportToken } from './logFactory'
 import { ApplicationOptions } from './interfaces/applicationOptions'
+import { ConsoleLogger } from './consoleLogger'
 const winston = require('winston')
 
 export class Application {
-  protected log?: ILogger
+  protected log: ILogger
   protected options: ApplicationOptions
 
   constructor (
@@ -26,7 +27,10 @@ export class Application {
     this.loadLogger()
     this.loadErrors()
     this.loadConfigs()
-    this.log = Container.get(LoggerToken)
+    if (!Container.has(LoggerToken)) {
+      Container.addSingleton(LoggerToken, new ConsoleLogger())
+    }
+    this.log = Container.get(LoggerToken) as ILogger
   }
 
   public async run (): Promise<void> {

@@ -8,5 +8,6 @@ import { Environment } from '../environment'
 
 export interface ServerOptions {
   port: number
-  environment: Environment
+  environment?: Environment
+  [key: string]: any
 }

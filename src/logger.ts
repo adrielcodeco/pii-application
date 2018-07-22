@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Container, SingletonService } from '@pii/di'
-import { LoggerInstance } from 'winston'
+import { Logger as LoggerInstance } from 'winston'
 import { LogFactoryToken } from './logFactory'
 import { ILogFactory } from './interfaces/iLogFactory'
 import { ILogger } from './interfaces/iLogger'

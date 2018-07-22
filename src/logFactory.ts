@@ -6,10 +6,10 @@
  */
 import { SingletonService, InjectMany } from '@pii/di'
 import {
-  TransportInstance,
-  LoggerInstance,
-  Logger as winstonLogger
+  Logger as LoggerInstance,
+  createLogger as winstonLogger
 } from 'winston'
+import * as TransportInstance from 'winston-transport'
 import { ILogFactory } from './interfaces/iLogFactory'
 const winston = require('winston')
 
@@ -20,15 +20,14 @@ export const LogFactoryToken = Symbol.for('LogFactory')
 export class LogFactory implements ILogFactory<LoggerInstance> {
   // @ts-ignore
   @InjectMany(LogTransportToken) public transports: TransportInstance[]
-  public emitErrs: boolean = true
   public exitOnError: boolean = false
+  public level: string = 'info'
 
   protected levels: any
   protected colors: any
 
   public setLevels (levels: Object) {
     this.levels = levels
-    winston.setLevels(levels)
   }
 
   public setColors (colors: Object) {
@@ -37,7 +36,6 @@ export class LogFactory implements ILogFactory<LoggerInstance> {
   }
 
   public getLog (): LoggerInstance {
-    winston.emitErrs = this.emitErrs
     this.setLevels({
       fatal: 0,
       error: 1,
@@ -54,9 +52,9 @@ export class LogFactory implements ILogFactory<LoggerInstance> {
       debug: 'blue',
       trace: 'gray'
     })
-    const logger: any = new winstonLogger({
+    const logger: any = winstonLogger({
+      level: this.level,
       levels: this.levels,
-      colors: this.colors,
       transports: this.transports,
       exitOnError: this.exitOnError
     })

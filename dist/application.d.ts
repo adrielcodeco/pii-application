@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { ILogger } from './interfaces/iLogger';
 import { ApplicationOptions } from './interfaces/applicationOptions';
 export declare class Application {
-    protected log?: ILogger;
+    protected log: ILogger;
     protected options: ApplicationOptions;
     constructor(options?: ApplicationOptions);
     run(): Promise<void>;

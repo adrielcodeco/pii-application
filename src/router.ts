@@ -11,3 +11,5 @@ export class Router {
 }
 
 export const RouterToken = Token(Router)
+export const ControllerToken = Token('EXPRESS_CONTROLLER_TOKEN')
+export const RequestExtensionToken = Token('RequestExtensionToken')

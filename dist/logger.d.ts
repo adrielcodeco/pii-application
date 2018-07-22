@@ -1,4 +1,4 @@
-import { LoggerInstance } from 'winston';
+import { Logger as LoggerInstance } from 'winston';
 import { ILogger } from './interfaces/iLogger';
 export declare const LoggerToken: unique symbol;
 export declare class Logger implements ILogger {

@@ -8,7 +8,7 @@ export {}
 
 const requireTest = () => {
   jest.resetModules()
-  return require('../src/fakeLogger')
+  return require('../src/consoleLogger')
 }
 
 const oldConsole = console.log
@@ -24,7 +24,7 @@ afterEach(() => {
 test('require', () => {
   expect.assertions(2)
   const unit = requireTest()
-  expect(unit).toHaveProperty('FakeLogger')
+  expect(unit).toHaveProperty('ConsoleLogger')
   expect(Object.keys(unit).length).toEqual(1)
 })
 
@@ -33,7 +33,7 @@ test('new instance', () => {
   const unit = requireTest()
   let logger
   expect(() => {
-    logger = new unit.FakeLogger()
+    logger = new unit.ConsoleLogger()
   }).not.toThrow()
   expect(logger.logger).toBeUndefined()
   expect(typeof (logger.stream || {}).write).toBe('function')
@@ -44,7 +44,7 @@ test('new instance', () => {
 test('call log', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.log('log')
   expect(console.log).toBeCalled()
 })
@@ -52,7 +52,7 @@ test('call log', () => {
 test('call error', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.error('error')
   expect(console.log).toBeCalled()
 })
@@ -60,7 +60,7 @@ test('call error', () => {
 test('call warn', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.warn('warn')
   expect(console.log).toBeCalled()
 })
@@ -68,7 +68,7 @@ test('call warn', () => {
 test('call info', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.info('info')
   expect(console.log).toBeCalled()
 })
@@ -76,7 +76,7 @@ test('call info', () => {
 test('call debug', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.debug('debug')
   expect(console.log).toBeCalled()
 })
@@ -84,7 +84,7 @@ test('call debug', () => {
 test('call notice', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.notice('notice')
   expect(console.log).toBeCalled()
 })

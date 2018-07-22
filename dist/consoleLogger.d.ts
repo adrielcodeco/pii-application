@@ -1,5 +1,5 @@
 import { ILogger } from './interfaces/iLogger';
-export declare class FakeLogger implements ILogger {
+export declare class ConsoleLogger implements ILogger {
     readonly stream: any;
     constructor();
     log(log: string, level?: string): void;
@@ -10,4 +10,4 @@ export declare class FakeLogger implements ILogger {
     notice(log: string): void;
     crit(log: string): void;
 }
-//# sourceMappingURL=fakeLogger.d.ts.map
+//# sourceMappingURL=consoleLogger.d.ts.map

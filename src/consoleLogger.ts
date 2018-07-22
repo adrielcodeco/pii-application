@@ -6,7 +6,7 @@
  */
 import { ILogger } from './interfaces/iLogger'
 
-export class FakeLogger implements ILogger {
+export class ConsoleLogger implements ILogger {
   get stream (): any {
     return {
       write: (message: string, encoding: string) => {

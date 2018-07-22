@@ -10,5 +10,6 @@ export interface ApplicationOptions {
     environment?: string;
     port?: number;
     useFakeRedis?: boolean;
+    [key: string]: any;
 }
 //# sourceMappingURL=applicationOptions.d.ts.map
