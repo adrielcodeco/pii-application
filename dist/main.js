@@ -27,7 +27,7 @@ class MainModule {
         require('source-map-support').install();
         require('moment').locale(locale.name);
         require('numeral').locale(locale.name);
-        moduleloader_1.default('#', process.cwd());
+        moduleloader_1.default(/#\/(.*)/, process.cwd());
     }
     useAlias(alias, path) {
         try {

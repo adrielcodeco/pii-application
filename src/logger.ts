@@ -10,7 +10,7 @@ import { LogFactoryToken } from './logFactory'
 import { ILogFactory } from './interfaces/iLogFactory'
 import { ILogger } from './interfaces/iLogger'
 
-export const LoggerToken = Symbol('Logger')
+export const LoggerToken = 'log'
 
 @SingletonService(LoggerToken)
 export class Logger implements ILogger {

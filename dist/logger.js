@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const di_1 = require("@pii/di");
 const logFactory_1 = require("./logFactory");
-exports.LoggerToken = Symbol('Logger');
+exports.LoggerToken = 'log';
 let Logger = class Logger {
     constructor() {
         const factory = di_1.Container.get(logFactory_1.LogFactoryToken);

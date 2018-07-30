@@ -36,7 +36,8 @@
   "license": "MIT",
   "dependencies": {
     "@pii/di": "file:../pii-di",
-    "@pii/moduleloader": "^1.0.0",
+    "@pii/moduleloader": "file:../pii-moduleLoader",
+    "@pii/utils": "file:../pii-utils",
     "colors": "github:adrielcodeco/colors.js",
     "moment": "^2.22.2",
     "numeral": "^2.0.6",

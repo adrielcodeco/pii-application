@@ -27,9 +27,9 @@ class MainModule {
     require('source-map-support').install()
     require('moment').locale(locale.name)
     require('numeral').locale(locale.name)
-    useAlias('#', process.cwd())
+    useAlias(/#\/(.*)/, process.cwd())
   }
-  useAlias (alias: string, path: string): MainModule {
+  useAlias (alias: string | RegExp, path: string): MainModule {
     try {
       console.log(`@Pii -- Using Alias '${alias}' to '${path}'`)
       useAlias(alias, path)

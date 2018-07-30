@@ -4,7 +4,7 @@ declare class MainModule {
     app?: Application;
     propagateError?: (err: any) => void;
     constructor(locale?: Locale);
-    useAlias(alias: string, path: string): MainModule;
+    useAlias(alias: string | RegExp, path: string): MainModule;
     makeApp(App: Application | {
         new (): Application;
     }): MainModule;
