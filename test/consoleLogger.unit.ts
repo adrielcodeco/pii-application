@@ -92,7 +92,7 @@ test('call notice', () => {
 test('call crit', () => {
   expect.assertions(1)
   const unit = requireTest()
-  const logger = new unit.FakeLogger()
+  const logger = new unit.ConsoleLogger()
   logger.crit('crit')
   expect(console.log).toBeCalled()
 })
