@@ -8,6 +8,7 @@ __export(require("./consoleLogger"));
 __export(require("./environment"));
 __export(require("./errors"));
 __export(require("./exception"));
+__export(require("./fakeLogger"));
 __export(require("./locale"));
 __export(require("./logFactory"));
 __export(require("./logger"));
