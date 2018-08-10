@@ -4,6 +4,7 @@ export * from './consoleLogger';
 export * from './environment';
 export * from './errors';
 export * from './exception';
+export * from './fakeLogger';
 export * from './locale';
 export * from './logFactory';
 export * from './logger';
