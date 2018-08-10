@@ -10,4 +10,4 @@ export class Router {
 
 }
 
-export const RouterToken = Token(Router)
+export const RequestExtensionToken = Token('RequestExtensionToken')

@@ -1,11 +1,12 @@
-import { TransportInstance, LoggerInstance } from 'winston';
+import { Logger as LoggerInstance } from 'winston';
+import * as TransportInstance from 'winston-transport';
 import { ILogFactory } from './interfaces/iLogFactory';
 export declare const LogTransportToken: unique symbol;
 export declare const LogFactoryToken: unique symbol;
 export declare class LogFactory implements ILogFactory<LoggerInstance> {
     transports: TransportInstance[];
-    emitErrs: boolean;
     exitOnError: boolean;
+    level: string;
     protected levels: any;
     protected colors: any;
     setLevels(levels: Object): void;

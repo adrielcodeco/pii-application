@@ -21,17 +21,19 @@ beforeAll(() => {
       emitErrs: false,
       TransportInstance: class TransportInstance {},
       LoggerInstance: class LoggerInstance {},
-      Logger: class {
-        stream = {
-          write: (message: string, encoding: string) => {
-            // does nothing
+      createLogger: () => {
+        return {
+          stream: {
+            write: (message: string, encoding: string) => {
+              // does nothing
+            }
+          },
+          log: (log, lvl) => {
+            winstonInfoMock(log)
+          },
+          info: log => {
+            winstonInfoMock(log)
           }
-        }
-        log (log, lvl) {
-          this.stream.write(log, 'utf8')
-        }
-        info (log) {
-          winstonInfoMock(log)
         }
       }
     }
@@ -89,15 +91,16 @@ test('call setColors', () => {
 })
 
 test('call getLog', () => {
-  expect.assertions(3)
+  expect.assertions(4)
   const unit = requireTest()
-  const { Logger, winstonInfoMock } = require('winston')
+  const { winstonInfoMock } = require('winston')
   const factor = new unit.LogFactory()
   let logger
   expect(() => {
     logger = factor.getLog()
   }).not.toThrow()
-  expect(logger).toBeInstanceOf(Logger)
+  expect(logger).toHaveProperty('stream')
+  expect(logger).toHaveProperty('log')
   logger.log('test log', 'info')
   expect(winstonInfoMock).toBeCalled()
 })
