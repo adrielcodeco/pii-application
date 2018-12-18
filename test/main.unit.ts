@@ -16,14 +16,16 @@ beforeAll(() => {
 })
 
 afterAll(() => {
+  // @ts-ignore
   Reflect.set(console, 'log', console['_log'])
 })
 
 test('require', () => {
-  expect.assertions(2)
+  expect.assertions(3)
   const unit = requireTest()
+  expect(unit).toHaveProperty('MainModule')
   expect(unit).toHaveProperty('main')
-  expect(Object.keys(unit).length).toEqual(1)
+  expect(Object.keys(unit).length).toEqual(2)
 })
 
 test('call main without arguments', () => {
@@ -46,6 +48,6 @@ test.skip('call main with app', () => {
   const unit = requireTest()
   const Application = require('../src/application').Application
   const app = new Application()
-  // tslint:disable-next-line: no-floating-promises
+  // @ts-ignore
   return expect(unit.main(() => app)).resolves.toBe()
 })

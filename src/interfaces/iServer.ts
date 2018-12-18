@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 export interface IServer {
-  prepare (): void
-  init (): void
-  start (): void
-  stop (): void
+  prepare (): Promise<void>
+  init (): Promise<void>
+  start (): Promise<void>
+  stop (): Promise<void>
 }

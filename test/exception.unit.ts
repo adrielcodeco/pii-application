@@ -20,7 +20,7 @@ test('require', () => {
 test('new', () => {
   expect.assertions(6)
   const unit = requireTest()
-  let exc
+  let exc: any = {}
   expect(() => {
     exc = new unit.Exception({
       code: 'code',
@@ -40,7 +40,7 @@ test('new', () => {
 test('new without arguments', () => {
   expect.assertions(6)
   const unit = requireTest()
-  let exc
+  let exc: any = {}
   expect(() => {
     exc = new unit.Exception()
   }).not.toThrowError()
@@ -125,6 +125,7 @@ test('call toJSON', () => {
     details: 'details'
   }
   for (let key in ex) {
+    // @ts-ignore
     const opt = { [key]: ex[key] }
     let exc = new unit.Exception(opt)
     expect(exc.toJSON()).toEqual(opt)

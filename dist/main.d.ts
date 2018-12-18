@@ -1,18 +1,22 @@
 import { Application } from './application';
 import { Locale } from './locale';
-declare class MainModule {
+export interface MainModuleOptions {
+    locale?: Locale;
+    hideLogo?: boolean;
+}
+export declare class MainModule {
+    private failed;
     app?: Application;
-    propagateError?: (err: any) => void;
-    constructor(locale?: Locale);
+    propagateError?: any;
+    constructor(options?: MainModuleOptions);
     useAlias(alias: string | RegExp, path: string): MainModule;
     makeApp(App: Application | {
         new (): Application;
     }): MainModule;
     makeAppFrom(path: string): this;
-    start(): Promise<void>;
-    then(fn: Function): this;
-    catch(fn: (err: any) => void): MainModule;
+    start(): Promise<MainModule>;
+    stop(killProcess?: boolean): Promise<void>;
+    step(fn: Function): MainModule;
 }
-export declare function main(): MainModule;
-export {};
+export declare function main(options?: MainModuleOptions): MainModule;
 //# sourceMappingURL=main.d.ts.map

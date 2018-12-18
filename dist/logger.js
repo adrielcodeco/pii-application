@@ -9,46 +9,58 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const di_1 = require("@pii/di");
-const logFactory_1 = require("./logFactory");
+var di_1 = require("@pii/di");
+var logFactory_1 = require("./logFactory");
 exports.LoggerToken = 'log';
-let Logger = class Logger {
-    constructor() {
-        const factory = di_1.Container.get(logFactory_1.LogFactoryToken);
+var Logger = (function () {
+    function Logger() {
+        var factory = di_1.Container.get(logFactory_1.LogFactoryToken);
         if (!factory) {
             throw new Error('logger factory not found');
         }
         this.logger = factory.getLog();
     }
-    get stream() {
-        return this.logger.stream;
-    }
-    log(log, level = 'info') {
+    Object.defineProperty(Logger.prototype, "stream", {
+        get: function () {
+            return this.logger.stream;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Logger.prototype.log = function (log, level) {
+        if (level === void 0) { level = 'info'; }
         this.logger.log(log, level);
-    }
-    error(log) {
+    };
+    Logger.prototype.error = function (log) {
         this.logger.error(log);
-    }
-    warn(log) {
-        this.logger.warn(log);
-    }
-    info(log) {
+    };
+    Logger.prototype.warn = function (log) {
+        this.logger.warning(log);
+    };
+    Logger.prototype.info = function (log) {
         this.logger.info(log);
-    }
-    debug(log) {
+    };
+    Logger.prototype.debug = function (log) {
         this.logger.debug(log);
-    }
-    notice(log) {
+    };
+    Logger.prototype.notice = function (log) {
         this.logger.notice(log);
-    }
-    crit(log) {
+    };
+    Logger.prototype.crit = function (log) {
         this.logger.crit(log);
-    }
-};
-Logger = __decorate([
-    di_1.SingletonService(exports.LoggerToken),
-    __metadata("design:paramtypes", [])
-], Logger);
+    };
+    Logger.prototype.alert = function (log) {
+        this.logger.alert(log);
+    };
+    Logger.prototype.emerg = function (log) {
+        this.logger.emerg(log);
+    };
+    Logger = __decorate([
+        di_1.SingletonService(exports.LoggerToken),
+        __metadata("design:paramtypes", [])
+    ], Logger);
+    return Logger;
+}());
 exports.Logger = Logger;
 
 //# sourceMappingURL=logger.js.map

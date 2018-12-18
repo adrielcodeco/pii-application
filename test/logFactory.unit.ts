@@ -28,10 +28,10 @@ beforeAll(() => {
               // does nothing
             }
           },
-          log: (log, lvl) => {
+          log: (log: any, lvl: any) => {
             winstonInfoMock(log)
           },
-          info: log => {
+          info: (log: any) => {
             winstonInfoMock(log)
           }
         }
@@ -45,12 +45,13 @@ afterAll(() => {
 })
 
 test('require', () => {
-  expect.assertions(4)
+  expect.assertions(5)
   const unit = requireTest()
   expect(unit).toHaveProperty('LogTransportToken')
+  expect(unit).toHaveProperty('LogFormatToken')
   expect(unit).toHaveProperty('LogFactoryToken')
   expect(unit).toHaveProperty('LogFactory')
-  expect(Object.keys(unit).length).toEqual(3)
+  expect(Object.keys(unit).length).toEqual(4)
 })
 
 test('new instance', () => {
@@ -95,7 +96,7 @@ test('call getLog', () => {
   const unit = requireTest()
   const { winstonInfoMock } = require('winston')
   const factor = new unit.LogFactory()
-  let logger
+  let logger: any = {}
   expect(() => {
     logger = factor.getLog()
   }).not.toThrow()

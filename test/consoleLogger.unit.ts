@@ -11,14 +11,23 @@ const requireTest = () => {
   return require('../src/consoleLogger')
 }
 
-const oldConsole = console.log
+const oldConsoleLog = console.log
+const oldConsoleError = console.error
+const oldConsoleWarn = console.warn
+const oldConsoleInfo = console.info
 
 beforeEach(() => {
   console.log = jest.fn()
+  console.error = jest.fn()
+  console.warn = jest.fn()
+  console.info = jest.fn()
 })
 
 afterEach(() => {
-  console.log = oldConsole
+  console.log = oldConsoleLog
+  console.error = oldConsoleError
+  console.warn = oldConsoleWarn
+  console.info = oldConsoleInfo
 })
 
 test('require', () => {
@@ -31,7 +40,7 @@ test('require', () => {
 test('new instance', () => {
   expect.assertions(4)
   const unit = requireTest()
-  let logger
+  let logger: any = {}
   expect(() => {
     logger = new unit.ConsoleLogger()
   }).not.toThrow()
@@ -46,7 +55,7 @@ test('call log', () => {
   const unit = requireTest()
   const logger = new unit.ConsoleLogger()
   logger.log('log')
-  expect(console.log).toBeCalled()
+  expect(console.info).toBeCalled()
 })
 
 test('call error', () => {
@@ -54,7 +63,7 @@ test('call error', () => {
   const unit = requireTest()
   const logger = new unit.ConsoleLogger()
   logger.error('error')
-  expect(console.log).toBeCalled()
+  expect(console.error).toBeCalled()
 })
 
 test('call warn', () => {
@@ -62,7 +71,7 @@ test('call warn', () => {
   const unit = requireTest()
   const logger = new unit.ConsoleLogger()
   logger.warn('warn')
-  expect(console.log).toBeCalled()
+  expect(console.warn).toBeCalled()
 })
 
 test('call info', () => {
@@ -70,7 +79,7 @@ test('call info', () => {
   const unit = requireTest()
   const logger = new unit.ConsoleLogger()
   logger.info('info')
-  expect(console.log).toBeCalled()
+  expect(console.info).toBeCalled()
 })
 
 test('call debug', () => {

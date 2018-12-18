@@ -6,7 +6,7 @@ export declare class Application {
     protected options: ApplicationOptions;
     constructor(options?: ApplicationOptions);
     run(): Promise<void>;
-    kill(pid: number, signal?: string | number): void;
+    kill(pid: number, killProcess?: boolean, signal?: string | number): Promise<void>;
     loadLogger(): void;
     loadErrors(): void;
     loadConfigs(): void;

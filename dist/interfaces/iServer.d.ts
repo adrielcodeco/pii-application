@@ -1,7 +1,7 @@
 export interface IServer {
-    prepare(): void;
-    init(): void;
-    start(): void;
-    stop(): void;
+    prepare(): Promise<void>;
+    init(): Promise<void>;
+    start(): Promise<void>;
+    stop(): Promise<void>;
 }
 //# sourceMappingURL=iServer.d.ts.map

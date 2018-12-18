@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { SingletonService, InjectMany } from '@pii/di'
+import { SingletonService, Inject, InjectMany } from '@pii/di'
 import {
   Logger as LoggerInstance,
   createLogger as winstonLogger
@@ -12,14 +12,18 @@ import {
 import * as TransportInstance from 'winston-transport'
 import { ILogFactory } from './interfaces/iLogFactory'
 const winston = require('winston')
+const { format } = require('logform')
 
 export const LogTransportToken = Symbol.for('LogTransport')
+export const LogFormatToken = Symbol.for('LogFormat')
 export const LogFactoryToken = Symbol.for('LogFactory')
 
 @SingletonService(LogFactoryToken)
 export class LogFactory implements ILogFactory<LoggerInstance> {
-  // @ts-ignore
-  @InjectMany(LogTransportToken) public transports: TransportInstance[]
+  @InjectMany(LogTransportToken)
+  transports!: TransportInstance[]
+  @Inject(LogFormatToken)
+  formats!: any[]
   public exitOnError: boolean = false
   public level: string = 'info'
 
@@ -55,8 +59,10 @@ export class LogFactory implements ILogFactory<LoggerInstance> {
     const logger: any = winstonLogger({
       level: this.level,
       levels: this.levels,
-      transports: this.transports,
-      exitOnError: this.exitOnError
+      format: format.combine(...(this.formats || this.formatLog())),
+      transports: this.transports || [],
+      exitOnError: this.exitOnError,
+      silent: !this.transports || this.transports.length === 0
     })
     logger.stream = {
       write: (message: string, encoding: string) => {
@@ -64,5 +70,19 @@ export class LogFactory implements ILogFactory<LoggerInstance> {
       }
     }
     return logger
+  }
+
+  formatLog () {
+    return [
+      format.label({ label: '@Pii' }),
+      format.timestamp(),
+      format.printf((info: any) => {
+        return `${info.label}#${info.timestamp}[${info.level}]: ${
+          typeof info.message === 'object'
+            ? JSON.stringify(info.message)
+            : info.message
+        }`
+      })
+    ]
   }
 }

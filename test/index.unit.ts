@@ -11,7 +11,7 @@ const requireTest = () => {
 }
 
 test('require', () => {
-  expect.assertions(19)
+  expect.assertions(21)
   const unit = requireTest()
   expect(unit).toHaveProperty('Application')
   expect(unit).toHaveProperty('ConsoleLogger')
@@ -23,13 +23,15 @@ test('require', () => {
   expect(unit).toHaveProperty('Locale')
   expect(unit).toHaveProperty('LogFactory')
   expect(unit).toHaveProperty('LogFactoryToken')
+  expect(unit).toHaveProperty('LogFormatToken')
   expect(unit).toHaveProperty('LogTransportToken')
   expect(unit).toHaveProperty('Logger')
   expect(unit).toHaveProperty('LoggerToken')
+  expect(unit).toHaveProperty('MainModule')
   expect(unit).toHaveProperty('main')
   expect(unit).toHaveProperty('Router')
   expect(unit).toHaveProperty('RequestExtensionToken')
   expect(unit).toHaveProperty('Server')
   expect(unit).toHaveProperty('ServerToken')
-  expect(Object.keys(unit).length).toEqual(18)
+  expect(Object.keys(unit).length).toEqual(20)
 })

@@ -9,5 +9,7 @@ export declare class ConsoleLogger implements ILogger {
     debug(log: string): void;
     notice(log: string): void;
     crit(log: string): void;
+    alert(log: string): void;
+    emerg(log: string): void;
 }
 //# sourceMappingURL=consoleLogger.d.ts.map

@@ -6,6 +6,8 @@
  */
 export {}
 
+import { ILogFactory } from '../src/interfaces/iLogFactory'
+
 const requireTest = () => {
   jest.resetModules()
   return require('../src/logger')
@@ -22,7 +24,7 @@ test('require', () => {
 test('new instance', () => {
   expect.assertions(3)
   const unit = requireTest()
-  let logger
+  let logger: any = {}
   expect(() => {
     logger = new unit.Logger()
   }).not.toThrow()
@@ -42,19 +44,18 @@ test('new instance without LogFactory', () => {
   }).toThrowError(/logger factory not found/)
 })
 
-test('call log without level', () => {
+test('call log without level', async () => {
   expect.assertions(2)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  interface ILogger {
+    log (log: any, lvl: any): void
+  }
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        log: (log, lvl) => {
+        log: (log: any, lvl: any) => {
           expect(log).toEqual('log')
           expect(lvl).toEqual('info')
         }
@@ -71,15 +72,14 @@ test('call log', () => {
   expect.assertions(2)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  interface ILogger {
+    log (log: any, lvl: any): void
+  }
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        log: (log, lvl) => {
+        log: (log: any, lvl: any) => {
           expect(log).toEqual('log')
           expect(lvl).toEqual('1')
         }
@@ -96,15 +96,14 @@ test('call error', () => {
   expect.assertions(1)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  interface ILogger {
+    error (log: any): void
+  }
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        error: (log) => {
+        error: (log: any) => {
           expect(log).toEqual('error')
         }
       }
@@ -120,15 +119,14 @@ test('call warn', () => {
   expect.assertions(1)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  interface ILogger {
+    warning (log: any): void
+  }
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        warn: (log) => {
+        warning: (log: any) => {
           expect(log).toEqual('warn')
         }
       }
@@ -144,15 +142,14 @@ test('call info', () => {
   expect.assertions(1)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  interface ILogger {
+    info (log: any): void
+  }
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        info: (log) => {
+        info: (log: any) => {
           expect(log).toEqual('info')
         }
       }
@@ -168,15 +165,14 @@ test('call debug', () => {
   expect.assertions(1)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
+  interface ILogger {
+    debug (log: any): void
+  }
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        debug: (log) => {
+        debug: (log: any) => {
           expect(log).toEqual('debug')
         }
       }
@@ -192,15 +188,14 @@ test('call notice', () => {
   expect.assertions(1)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
+  interface ILogger {
+    notice (log: any): void
+  }
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        notice: (log) => {
+        notice: (log: any) => {
           expect(log).toEqual('notice')
         }
       }
@@ -216,15 +211,14 @@ test('call crit', () => {
   expect.assertions(1)
   const unit = requireTest()
   const { LogFactoryToken } = require('../src/logFactory')
-  // tslint:disable-next-line: no-unused-variable
-  const { LoggerInstance } = require('winston')
-  // tslint:disable-next-line: no-unused-variable
-  const { ILogFactory } = require('../src/interfaces/iLogFactory')
+  interface ILogger {
+    crit (log: any): void
+  }
   const { Container } = require('@pii/di')
-  class LogFactory implements ILogFactory<LoggerInstance> {
+  class LogFactory implements ILogFactory<ILogger> {
     public getLog () {
       return {
-        crit: (log) => {
+        crit: (log: any) => {
           expect(log).toEqual('crit')
         }
       }

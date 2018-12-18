@@ -46,4 +46,12 @@ export class FakeLogger implements ILogger {
   public crit (log: string): void {
     // does nothing
   }
+
+  public alert (log: string): void {
+    // does nothing
+  }
+
+  public emerg (log: string): void {
+    // does nothing
+  }
 }

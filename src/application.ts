@@ -42,13 +42,19 @@ export class Application {
     }
   }
 
-  public kill (pid: number, signal?: string | number): void {
+  public async kill (
+    pid: number,
+    killProcess?: boolean,
+    signal?: string | number
+  ): Promise<void> {
     const servers = Container.getServices<IServer>(ServerToken)
     for (let i = 0; i < servers.length; i++) {
       const server = servers[i]
-      server.stop()
+      await server.stop()
     }
-    process.kill(pid, signal)
+    if (killProcess !== false) {
+      process.kill(pid, signal)
+    }
   }
 
   public loadLogger (): void {

@@ -12,38 +12,48 @@ const defaultLocale = {
   name: 'en-us'
 }
 
-class MainModule {
+export interface MainModuleOptions {
+  locale?: Locale
+  hideLogo?: boolean
+}
+
+export class MainModule {
+  private failed: boolean = false
   app?: Application = undefined
-  propagateError?: (err: any) => void
-  constructor (locale: Locale = defaultLocale) {
-    console.log('   ____  ____  _ _')
-    console.log('  / __ \\|  _ \\(_|_)')
-    console.log(' / / _` | |_) | | |')
-    console.log('| | (_| |  __/| | |')
-    console.log(' \\ \\__,_|_|   |_|_|')
-    console.log('  \\____/')
+  propagateError?: any
+  constructor (options?: MainModuleOptions) {
+    if (!options) {
+      options = { }
+    }
+    if (options.hideLogo !== true) {
+      console.log('   ____  ____  _ _')
+      console.log('  / __ \\|  _ \\(_|_)')
+      console.log(' / / _` | |_) | | |')
+      console.log('| | (_| |  __/| | |')
+      console.log(' \\ \\__,_|_|   |_|_|')
+      console.log('  \\____/')
+    }
     console.log('@Pii -- Entry loader')
-    locale = Object.assign({}, defaultLocale, locale)
+    options.locale = Object.assign({}, defaultLocale, options.locale)
     require('source-map-support').install()
-    require('moment').locale(locale.name)
-    require('numeral').locale(locale.name)
+    require('moment').locale(options.locale.name)
+    require('numeral').locale(options.locale.name)
     useAlias(/#\/(.*)/, process.cwd())
   }
   useAlias (alias: string | RegExp, path: string): MainModule {
+    if (this.failed) return this
     try {
       console.log(`@Pii -- Using Alias '${alias}' to '${path}'`)
       useAlias(alias, path)
       return this
     } catch (err) {
-      if (this.propagateError) {
-        this.propagateError(err)
-      } else {
-        throw new Error(err)
-      }
+      this.failed = true
+      this.propagateError = err
       return this
     }
   }
   makeApp (App: Application | { new (): Application }): MainModule {
+    if (this.failed) return this
     try {
       console.log(`@Pii -- making app`)
       if (App instanceof Application) {
@@ -53,15 +63,13 @@ class MainModule {
       }
       return this
     } catch (err) {
-      if (this.propagateError) {
-        this.propagateError(err)
-      } else {
-        throw new Error(err)
-      }
+      this.failed = true
+      this.propagateError = err
       return this
     }
   }
   makeAppFrom (path: string) {
+    if (this.failed) return this
     try {
       console.log(`@Pii -- making app from '${path}'`)
       const appModule = require(path)
@@ -84,40 +92,41 @@ class MainModule {
       }
       return this
     } catch (err) {
-      if (this.propagateError) {
-        this.propagateError(err)
-      } else {
-        throw new Error(err)
-      }
+      this.failed = true
+      this.propagateError = err
       return this
     }
   }
-  async start () {
-    try {
-      console.log(`@Pii -- Starting`)
-      if (this.app instanceof Application) {
-        await this.app.run()
-      } else {
-        throw Error('result of makeApp is not an Application')
-      }
-    } catch (err) {
-      if (this.propagateError) {
-        this.propagateError(err)
-      } else {
-        throw new Error(err)
-      }
+  // @ts-ignore
+  async start (): Promise<MainModule> {
+    if (this.failed) {
+      throw this.propagateError
     }
-  }
-  then (fn: Function) {
-    fn && fn()
+    console.log(`@Pii -- Starting`)
+    if (this.app instanceof Application) {
+      await this.app.run()
+    } else {
+      throw Error('result of makeApp is not an Application')
+    }
     return this
   }
-  catch (fn: (err: any) => void): MainModule {
-    this.propagateError = fn
+  async stop (killProcess?: boolean) {
+    console.log(`@Pii -- Stoping`)
+    if (this.app instanceof Application) {
+      await this.app.kill(process.pid, killProcess)
+    } else {
+      throw Error('result of makeApp is not an Application')
+    }
+  }
+  step (fn: Function): MainModule {
+    if (this.failed) {
+      return this
+    }
+    (fn && fn())
     return this
   }
 }
 
-export function main () {
-  return new MainModule()
+export function main (options?: MainModuleOptions): MainModule {
+  return new MainModule(options)
 }

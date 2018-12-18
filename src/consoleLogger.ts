@@ -20,7 +20,20 @@ export class ConsoleLogger implements ILogger {
   }
 
   public log (log: string, level: string = 'info'): void {
-    console.log(`${level}: ${log}`)
+    switch (level) {
+      case 'error':
+        console.error(`${level}: ${log}`)
+        break
+      case 'warn':
+        console.warn(`${level}: ${log}`)
+        break
+      case 'info':
+        console.info(`${level}: ${log}`)
+        break
+      default:
+        console.log(`${level}: ${log}`)
+        break
+    }
   }
 
   public error (log: string): void {
@@ -44,6 +57,14 @@ export class ConsoleLogger implements ILogger {
   }
 
   public crit (log: string): void {
+    this.log(log, 'crit')
+  }
+
+  public alert (log: string): void {
+    this.log(log, 'crit')
+  }
+
+  public emerg (log: string): void {
     this.log(log, 'crit')
   }
 }

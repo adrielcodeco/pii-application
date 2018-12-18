@@ -7,47 +7,83 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const moduleloader_1 = require("@pii/moduleloader");
-const application_1 = require("./application");
-const defaultLocale = {
+var moduleloader_1 = __importDefault(require("@pii/moduleloader"));
+var application_1 = require("./application");
+var defaultLocale = {
     name: 'en-us'
 };
-class MainModule {
-    constructor(locale = defaultLocale) {
+var MainModule = (function () {
+    function MainModule(options) {
+        this.failed = false;
         this.app = undefined;
-        console.log('   ____  ____  _ _');
-        console.log('  / __ \\|  _ \\(_|_)');
-        console.log(' / / _` | |_) | | |');
-        console.log('| | (_| |  __/| | |');
-        console.log(' \\ \\__,_|_|   |_|_|');
-        console.log('  \\____/');
+        if (!options) {
+            options = {};
+        }
+        if (options.hideLogo !== true) {
+            console.log('   ____  ____  _ _');
+            console.log('  / __ \\|  _ \\(_|_)');
+            console.log(' / / _` | |_) | | |');
+            console.log('| | (_| |  __/| | |');
+            console.log(' \\ \\__,_|_|   |_|_|');
+            console.log('  \\____/');
+        }
         console.log('@Pii -- Entry loader');
-        locale = Object.assign({}, defaultLocale, locale);
+        options.locale = Object.assign({}, defaultLocale, options.locale);
         require('source-map-support').install();
-        require('moment').locale(locale.name);
-        require('numeral').locale(locale.name);
+        require('moment').locale(options.locale.name);
+        require('numeral').locale(options.locale.name);
         moduleloader_1.default(/#\/(.*)/, process.cwd());
     }
-    useAlias(alias, path) {
+    MainModule.prototype.useAlias = function (alias, path) {
+        if (this.failed)
+            return this;
         try {
-            console.log(`@Pii -- Using Alias '${alias}' to '${path}'`);
+            console.log("@Pii -- Using Alias '" + alias + "' to '" + path + "'");
             moduleloader_1.default(alias, path);
             return this;
         }
         catch (err) {
-            if (this.propagateError) {
-                this.propagateError(err);
-            }
-            else {
-                throw new Error(err);
-            }
+            this.failed = true;
+            this.propagateError = err;
             return this;
         }
-    }
-    makeApp(App) {
+    };
+    MainModule.prototype.makeApp = function (App) {
+        if (this.failed)
+            return this;
         try {
-            console.log(`@Pii -- making app`);
+            console.log("@Pii -- making app");
             if (App instanceof application_1.Application) {
                 this.app = App;
             }
@@ -57,26 +93,24 @@ class MainModule {
             return this;
         }
         catch (err) {
-            if (this.propagateError) {
-                this.propagateError(err);
-            }
-            else {
-                throw new Error(err);
-            }
+            this.failed = true;
+            this.propagateError = err;
             return this;
         }
-    }
-    makeAppFrom(path) {
+    };
+    MainModule.prototype.makeAppFrom = function (path) {
+        if (this.failed)
+            return this;
         try {
-            console.log(`@Pii -- making app from '${path}'`);
-            const appModule = require(path);
+            console.log("@Pii -- making app from '" + path + "'");
+            var appModule = require(path);
             if (application_1.Application.isPrototypeOf(appModule)) {
                 this.makeApp(appModule);
             }
             else {
-                let app;
-                for (let key in appModule) {
-                    const maybeApp = Reflect.get(appModule, key);
+                var app = void 0;
+                for (var key in appModule) {
+                    var maybeApp = Reflect.get(appModule, key);
                     if (application_1.Application.isPrototypeOf(maybeApp)) {
                         app = maybeApp;
                         break;
@@ -86,53 +120,66 @@ class MainModule {
                     this.makeApp(app);
                 }
                 else {
-                    throw new Error(`Application not found in path '${path}'`);
+                    throw new Error("Application not found in path '" + path + "'");
                 }
             }
             return this;
         }
         catch (err) {
-            if (this.propagateError) {
-                this.propagateError(err);
-            }
-            else {
-                throw new Error(err);
-            }
+            this.failed = true;
+            this.propagateError = err;
             return this;
         }
-    }
-    start() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                console.log(`@Pii -- Starting`);
-                if (this.app instanceof application_1.Application) {
-                    yield this.app.run();
+    };
+    MainModule.prototype.start = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (this.failed) {
+                            throw this.propagateError;
+                        }
+                        console.log("@Pii -- Starting");
+                        if (!(this.app instanceof application_1.Application)) return [3, 2];
+                        return [4, this.app.run()];
+                    case 1:
+                        _a.sent();
+                        return [3, 3];
+                    case 2: throw Error('result of makeApp is not an Application');
+                    case 3: return [2, this];
                 }
-                else {
-                    throw Error('result of makeApp is not an Application');
-                }
-            }
-            catch (err) {
-                if (this.propagateError) {
-                    this.propagateError(err);
-                }
-                else {
-                    throw new Error(err);
-                }
-            }
+            });
         });
-    }
-    then(fn) {
-        fn && fn();
+    };
+    MainModule.prototype.stop = function (killProcess) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("@Pii -- Stoping");
+                        if (!(this.app instanceof application_1.Application)) return [3, 2];
+                        return [4, this.app.kill(process.pid, killProcess)];
+                    case 1:
+                        _a.sent();
+                        return [3, 3];
+                    case 2: throw Error('result of makeApp is not an Application');
+                    case 3: return [2];
+                }
+            });
+        });
+    };
+    MainModule.prototype.step = function (fn) {
+        if (this.failed) {
+            return this;
+        }
+        (fn && fn());
         return this;
-    }
-    catch(fn) {
-        this.propagateError = fn;
-        return this;
-    }
-}
-function main() {
-    return new MainModule();
+    };
+    return MainModule;
+}());
+exports.MainModule = MainModule;
+function main(options) {
+    return new MainModule(options);
 }
 exports.main = main;
 

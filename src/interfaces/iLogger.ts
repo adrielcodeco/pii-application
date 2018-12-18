@@ -13,4 +13,6 @@ export interface ILogger {
   debug (log: string): void
   notice (log: string): void
   crit (log: string): void
+  alert (log: string): void
+  emerg (log: string): void
 }

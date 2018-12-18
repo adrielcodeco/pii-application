@@ -37,7 +37,7 @@ export class Logger implements ILogger {
   }
 
   public warn (log: string): void {
-    this.logger.warn(log)
+    this.logger.warning(log)
   }
 
   public info (log: string): void {
@@ -54,5 +54,13 @@ export class Logger implements ILogger {
 
   public crit (log: string): void {
     this.logger.crit(log)
+  }
+
+  public alert (log: string): void {
+    this.logger.alert(log)
+  }
+
+  public emerg (log: string): void {
+    this.logger.emerg(log)
   }
 }
